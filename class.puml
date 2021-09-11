@@ -1,0 +1,57 @@
+// Class Diagrams
+@startuml
+
+class Rental {}
+
+package Users {
+class User {}
+
+class Host {
+name: string
+location: string
+rooms: [Room]
+customers: [Customer]
+invoices: [Invoice]
+reservations: [Reservation]
+
+constructor(name: string, location: string)
+addRoom(room: Room)
+removeRoom(room: Room)
+sellRoom(customer: Customer, room: Room)
+issueInvoice(customer: Customer, invoice: Invoice)
+cancelInvoice(invoice: Invoice)
+greetCustomer(customer: Customer)
+}
+
+class Customer {
+name: string
+location: string
+reservations: [Reservation]
+invoices: [Invoice]
+
+constructor(name: string, location: string)
+addReservation(reservation: Reservation)
+cancelReservation(reservation: Reservation)
+cancelInvoice(invoice: Invoice)
+rentRoom(room: Room)
+}
+}
+
+class Room {
+name: string
+sqm: number
+location: string
+host: string
+customer: string
+
+constructor(name: string, sqm: number, location: string, host: string)
+}
+
+
+Host "1" *--> "0...*" Room : keeps, adds, removes, sells
+Customer "1" ---> "1" Room : rents
+Customer "1" o---> "0...*" Invoice : keeps
+Host "0...*" o---> "0...*" Customer : keeps
+
+Customer -|> User
+@enduml
